@@ -15,11 +15,11 @@ Entrenador web para memorizar los 57 algoritmos **OLL** del cubo de Rubik (méto
 
 | Entrenamiento | Detalles y solución |
 |---|---|
-| ![](img-4.JPG) | ![](img-2.JPG) |
+| ![](images/img-4.JPG) | ![](images/img-2.JPG) |
 
 | Todos los algoritmos | Configuración |
 |---|---|
-| ![](img-1.JPG) | ![](img-3.JPG) |
+| ![](images/img-1.JPG) | ![](images/img-3.JPG) |
 
 ## Uso
 
