@@ -13,22 +13,18 @@ Entrenador web para memorizar los 57 algoritmos **OLL** del cubo de Rubik (méto
 
 ## Capturas
 
-| Entrenamiento | Detalles y solución |
-|---|---|
-| ![](images/img-4.JPG) | ![](images/img-2.JPG) |
-
-| Todos los algoritmos | Configuración |
-|---|---|
-| ![](images/img-1.JPG) | ![](images/img-3.JPG) |
+| Entrenamiento | Detalles y solución | Todos los algoritmos |
+|---|---|---|
+| ![](images/img-4.JPG) | ![](images/img-2.JPG) | ![](images/img-1.JPG) |
 
 ## Uso
 
 ```bash
-git clone <url-del-repo>
+git clone https://github.com/deivystoteles/oll-trainer.git
 cd oll-trainer
-# abre index.html en el navegador
+npx serve  # luego abre la URL que aparece en la terminal
 ```
 
-## Notación
+## Tecnologías
 
-Notación estándar de cubo (R, U, F, r, f…). `'` = sentido antihorario, `2` = giro doble.
+HTML, CSS y JavaScript puro, con [cubing.js](https://js.cubing.net/cubing/) para el cubo 3D (CDN).
