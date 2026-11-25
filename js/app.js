@@ -1,12 +1,12 @@
 // Entrenador OLL: estado, pesos, UI y eventos.
 import { TOTAL, casoOLL, diagrama, invertAlg, ROTACIONES } from "./algoritmos.js";
 import { playerListo, mostrarCaso, inspeccion, animarSolucion } from "./cubo.js";
+import { login, logout, sesionActiva, cargarDatos, guardarPeso, guardarColor } from "./supabase.js";
 
 const $ = id => document.getElementById(id);
 
 /* ---------- Configuración ---------- */
 const PESO_INICIAL = 4, PESO_MIN = 1, PESO_MAX = 16;
-const KEY_PESOS = "oll-pesos", KEY_COLOR = "oll-color-arriba";
 
 // rot = giro del cubo entero que deja ese color arriba
 const COLORES = {
@@ -37,23 +37,18 @@ const FAMILIAS = [
   { id: "l",        nombre: "L",           rep: 47, casos: [47, 48, 49, 50, 53, 54] },
 ];
 
-/* ---------- Pesos (localStorage) ---------- */
+/* ---------- Pesos (se cargan desde Supabase al iniciar sesión) ---------- */
 let pesos = {};
-try { pesos = JSON.parse(localStorage.getItem(KEY_PESOS)) || {}; } catch {}
 const pesoDe = num => pesos[num] ?? PESO_INICIAL;
 
 function registrarPeso(num, ok) {
   const w = pesoDe(num);
   pesos[num] = ok ? Math.max(PESO_MIN, w / 2) : Math.min(PESO_MAX, w * 2);
-  try { localStorage.setItem(KEY_PESOS, JSON.stringify(pesos)); } catch {}
+  guardarPeso(num, pesos[num]).then(r => r.error && console.error(r.error));
 }
 
 /* ---------- Color de la capa de arriba ---------- */
 let colorArriba = "yellow";
-try {
-  const g = localStorage.getItem(KEY_COLOR);
-  if (g && COLORES[g]) colorArriba = g;
-} catch {}
 
 function pintarColores() {
   const cont = $("colores");
@@ -65,7 +60,7 @@ function pintarColores() {
     b.title = nombre;
     b.addEventListener("click", () => {
       colorArriba = nombre;
-      try { localStorage.setItem(KEY_COLOR, nombre); } catch {}
+      guardarColor(nombre).then(r => r.error && console.error(r.error));
       pintarColores();
       mostrarActual();
       refrescarDetalles();
@@ -287,7 +282,23 @@ $("btn-config").addEventListener("click", () => { $("config").hidden = !$("confi
 $("btn-lista").addEventListener("click", abrirLista);
 $("btn-cerrar-lista").addEventListener("click", cerrarLista);
 
+$("btn-logout").addEventListener("click", async () => {
+  await logout();
+  // Limpia todo el estado en memoria
+  pesos = {};
+  actual = null;
+  last = -1;
+  detalles.hidden = true;
+  $("config").hidden = true;
+  cerrarLista();
+  $("clave").value = "";
+  $("login").hidden = false;
+});
+
 document.addEventListener("keydown", e => {
+  // Con el login visible no se capturan teclas (hay que poder escribir)
+  if (!$("login").hidden) return;
+
   // Con la lista abierta solo Esc hace algo
   if (!vistaLista.hidden) {
     if (e.key === "Escape") cerrarLista();
@@ -303,6 +314,38 @@ document.addEventListener("keydown", e => {
   else if (e.key === "ArrowRight") { e.preventDefault(); registrar(true); }
 });
 
-/* ---------- Inicio ---------- */
-pintarColores();
-playerListo.then(siguienteCaso); // no se toca el player hasta que esté definido
+/* ---------- Inicio (tras el login) ---------- */
+async function iniciar() {
+  const d = await cargarDatos();
+  pesos = d.pesos;
+  if (d.color && COLORES[d.color]) colorArriba = d.color;
+  pintarColores();
+  await playerListo; // no se toca el player hasta que esté definido
+  siguienteCaso();
+}
+
+$("login-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  $("login-error").textContent = "";
+  const { error } = await login($("email").value, $("clave").value);
+  if (error) { $("login-error").textContent = "Credenciales incorrectas"; return; }
+  try {
+    await iniciar();
+    $("login").hidden = true;
+  } catch (err) {
+    console.error(err);
+    $("login-error").textContent = "Error al cargar tus datos";
+  }
+});
+
+
+// Al abrir la página: si ya había sesión, entra directo
+sesionActiva().then(async ok => {
+  if (!ok) return;
+  try {
+    await iniciar();
+    $("login").hidden = true;
+  } catch (err) {
+    console.error(err);
+  }
+});

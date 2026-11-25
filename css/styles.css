@@ -260,3 +260,30 @@ button {
 .filtro .dib-f { width: 44px; }
 .filtro .dib-f svg { width: 100%; height: auto; display: block; }
 .filtro .nom { font-size: 0.7rem; font-weight: 600; text-align: center; line-height: 1.1; }
+
+
+#login { position: fixed; inset: 0; z-index: 50; background: var(--bg);
+  display: flex; align-items: center; justify-content: center; }
+#login[hidden] { display: none; }
+.login-box { display: flex; flex-direction: column; gap: .8rem; width: min(90vw, 300px);
+  padding: 1.4rem; background: #23232b; border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--a); }
+.login-box h2 { margin: 0 0 .4rem; }
+.login-box input { padding: .6rem; background: var(--bg); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 0; font: inherit; }
+.login-box button { padding: .6rem; font-weight: 600; background: var(--bg); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 0; box-shadow: 3px 3px 0 var(--blue); }
+#login-error { color: var(--b); font-size: .85rem; min-height: 1em; }
+
+#btn-logout {
+  margin-top: 0.8rem;
+  width: 100%;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 0.8rem;
+  background: var(--bg);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--red);
+}
+#btn-logout:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--red); }
