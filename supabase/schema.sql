@@ -20,3 +20,6 @@ create policy "mi perfil" on perfil
 
 create policy "mi progreso" on progreso_caso
   for all using (auth.uid() = usuario_id) with check (auth.uid() = usuario_id);
+
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on perfil, progreso_caso to authenticated;

@@ -24,6 +24,10 @@ Entrenador web para memorizar los 57 algoritmos **OLL** del cubo de Rubik (méto
 |---|---|
 | ![](images/img-3.JPG) | ![](images/img-2.JPG) |
 
+| Inicio de sesión |
+|---|
+| ![](images/img-5.JPG) |
+
 ## Despliegue
 
 Requiere una cuenta gratuita en [Supabase](https://supabase.com). Los usuarios se crean a mano (no hay registro).

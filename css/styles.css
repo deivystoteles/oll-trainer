@@ -287,3 +287,14 @@ button {
   box-shadow: 4px 4px 0 var(--red);
 }
 #btn-logout:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--red); }
+
+
+.login-box input:-webkit-autofill,
+.login-box input:-webkit-autofill:hover,
+.login-box input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  -webkit-text-fill-color: var(--ink);
+  caret-color: var(--ink);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
