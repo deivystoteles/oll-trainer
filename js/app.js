@@ -163,6 +163,8 @@ function renderDetalles() {
   detalles.style.setProperty("--top", COLORES[colorArriba].css);
   detalles.innerHTML =
     `<strong>OLL ${actual.num}</strong>` +
+    `<div class="sol-label">Algoritmo para llegar al caso:</div>` +
+    `<div class="sol">${actual.setup}</div>` +
     `<div class="sol-label">Solución:</div>` +
     `<div class="sol">${actual.solucion}</div>` +
     `<div class="sol-label">Posición para aplicarlo:</div>` +
